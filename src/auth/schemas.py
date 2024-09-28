@@ -35,6 +35,6 @@ class UserUpdate(schemas.BaseUserUpdate):
     is_verified: Optional[bool] = False
 
 
-class CreateRole(BaseModel):
+class RoleCreate(BaseModel):
     name: str
     permission: Json
