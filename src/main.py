@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from src.auth.router import router
+from src.assistant.router import router as assistant_router
+from src.auth.router import router as auth_router
 
 app = FastAPI()
 
@@ -17,6 +18,7 @@ async def create_look():
     return look
 
 
-app.include_router(router=router)
+app.include_router(router=auth_router)
+app.include_router(router=assistant_router)
 
 
