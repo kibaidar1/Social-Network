@@ -1,6 +1,14 @@
 import datetime
+from typing import Any
 
 from pydantic import BaseModel
+
+
+class BaseResponse(BaseModel):
+    message: str
+    data: Any or None = None
+    errors: Any or None = None
+    meta: Any or None = None
 
 
 class AssistantRead(BaseModel):
