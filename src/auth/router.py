@@ -1,8 +1,11 @@
 from fastapi import APIRouter, Depends
+from sqlalchemy import insert
+from sqlalchemy.orm import Session
 
 from src.auth.base_config import auth_backend, current_active_user, fastapi_users
-from src.auth.models import User
-from src.auth.schemas import UserRead, UserCreate, UserUpdate, RoleCreate
+from src.auth.models import User, Role
+from src.auth.schemas import UserRead, UserCreateUpdate, RoleCreate
+from src.database import get_async_session
 
 router = APIRouter()
 
@@ -13,7 +16,7 @@ router.include_router(
     tags=["auth"]
 )
 router.include_router(
-    fastapi_users.get_register_router(UserRead, UserCreate),
+    fastapi_users.get_register_router(UserRead, UserCreateUpdate),
     prefix="/auth",
     tags=["auth"],
 )
@@ -28,12 +31,16 @@ router.include_router(
     tags=["auth"],
 )
 router.include_router(
-    fastapi_users.get_users_router(UserRead, UserUpdate),
+    fastapi_users.get_users_router(UserRead, UserCreateUpdate),
     prefix="/users",
     tags=["users"],
 )
 
 
-@router.get("/authenticated-route")
-async def authenticated_route(user: User = Depends(current_active_user)):
-    return {"message": f"Hello {user.username}, your mail: {user.email}!"}
+@router.post("/add_role")
+async def add_role(role: RoleCreate, session: Session = Depends(get_async_session)):
+    print(role)
+    stmt = insert(Role).values(**role.model_dump())
+    session.execute(stmt)
+    session.commit()
+    return role

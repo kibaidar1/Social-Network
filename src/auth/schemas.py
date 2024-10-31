@@ -1,7 +1,7 @@
 from typing import Optional
 
 from fastapi_users import schemas
-from pydantic import EmailStr, BaseModel, Json
+from pydantic import EmailStr, BaseModel, Json, ConfigDict
 
 
 class UserRead(schemas.BaseUser[int]):
@@ -13,20 +13,10 @@ class UserRead(schemas.BaseUser[int]):
     is_superuser: bool = False
     is_verified: bool = False
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
-class UserCreate(schemas.BaseUserCreate):
-    username: str
-    email: EmailStr
-    password: str
-    is_active: Optional[bool] = True
-    is_superuser: Optional[bool] = False
-    is_verified: Optional[bool] = False
-
-
-class UserUpdate(schemas.BaseUserUpdate):
+class UserCreateUpdate(schemas.BaseUserCreate):
     username: str
     email: EmailStr
     password: str
@@ -37,4 +27,4 @@ class UserUpdate(schemas.BaseUserUpdate):
 
 class RoleCreate(BaseModel):
     name: str
-    permission: Json
+    permission: str

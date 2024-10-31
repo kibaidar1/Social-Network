@@ -8,7 +8,7 @@ from alembic import context
 from src.config import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT
 from src.database import Base
 from src.auth import models
-from src.assistant import models
+from src.profile import models
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -20,6 +20,8 @@ config.set_section_option(section, "DB_USER", DB_USER)
 config.set_section_option(section, "DB_PASSWORD", DB_PASSWORD)
 config.set_section_option(section, "DB_NAME", DB_NAME)
 config.set_section_option(section, "DB_PORT", DB_PORT)
+
+
 
 
 # Interpret the config file for Python logging.

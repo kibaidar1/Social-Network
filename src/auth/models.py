@@ -16,6 +16,9 @@ class Role(Base):
 
 class User(SQLAlchemyBaseUserTable[int], Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    username: Mapped[str] = mapped_column(String)
+    username: Mapped[str]
     role: Mapped[ForeignKey] = mapped_column(ForeignKey(Role.id, ondelete='CASCADE'))
     registered_at: Mapped[TIMESTAMP] = mapped_column(TIMESTAMP, default=datetime.now())
+    profile: Mapped["Profile"] = relationship("Profile",
+                                              back_populates="user",
+                                              uselist=False)
