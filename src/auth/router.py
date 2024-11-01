@@ -3,8 +3,8 @@ from sqlalchemy import insert
 from sqlalchemy.orm import Session
 
 from src.auth.base_config import auth_backend, current_active_user, fastapi_users
-from src.auth.models import User, Role
-from src.auth.schemas import UserRead, UserCreateUpdate, RoleCreate
+from src.auth.models import User
+from src.auth.schemas import UserRead, UserCreateUpdate
 from src.database import get_async_session
 
 router = APIRouter()
@@ -36,11 +36,3 @@ router.include_router(
     tags=["users"],
 )
 
-
-@router.post("/add_role")
-async def add_role(role: RoleCreate, session: Session = Depends(get_async_session)):
-    print(role)
-    stmt = insert(Role).values(**role.model_dump())
-    session.execute(stmt)
-    session.commit()
-    return role

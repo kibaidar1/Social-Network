@@ -7,17 +7,9 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.database import Base
 
 
-class Role(Base):
-    __tablename__ = "role"
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    name: Mapped[str] = mapped_column(String, unique=True)
-    permission: Mapped[JSON] = mapped_column(JSON, nullable=True)
-
-
 class User(SQLAlchemyBaseUserTable[int], Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     username: Mapped[str]
-    role: Mapped[ForeignKey] = mapped_column(ForeignKey(Role.id, ondelete='CASCADE'))
     registered_at: Mapped[TIMESTAMP] = mapped_column(TIMESTAMP, default=datetime.now())
     profile: Mapped["Profile"] = relationship("Profile",
                                               back_populates="user",
