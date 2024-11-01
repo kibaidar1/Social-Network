@@ -22,4 +22,3 @@ services:
     depends_on:
       - db
       - redis
-    command: ["/social_network_api/docker/api.sh"]

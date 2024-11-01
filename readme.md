@@ -33,7 +33,10 @@
 
 ```bash
 git clone https://github.com/kibaidar1/Social-Network.git
-cd <Social-Network>
+```
+Перейдите в папку приложения:
+```bash
+cd Social-Network
 ```
 
 ### 2. Переменные окружения
