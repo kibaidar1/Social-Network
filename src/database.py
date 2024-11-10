@@ -1,13 +1,25 @@
+from datetime import datetime
 from typing import AsyncGenerator
 
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import declarative_base, DeclarativeMeta
+from sqlalchemy import Integer, func
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, AsyncAttrs
+from sqlalchemy.orm import sessionmaker, DeclarativeBase, Mapped, mapped_column, declared_attr
 
 from src.config import DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME
 
 DATABASE_URL = f'postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
-Base: DeclarativeMeta = declarative_base()
+
+
+class Base(AsyncAttrs, DeclarativeBase):
+    __abstract__ = True  # Класс абстрактный, чтобы не создавать отдельную таблицу для него
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
+
+    @declared_attr.directive
+    def __tablename__(cls) -> str:
+        return cls.__name__.lower() + 's'
 
 
 engine = create_async_engine(DATABASE_URL)

@@ -1,7 +1,7 @@
 .git
 .cache
+.env.develop
 .env
-.env.dev
 .venv/
 *.log
 build/
@@ -11,4 +11,4 @@ my_notes.txt
 media/
 mydatabase
 .env.template
-.env.dev
+.env

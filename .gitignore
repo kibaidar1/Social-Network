@@ -1,7 +1,8 @@
+.env.develop
 .env
-.env.dev
 .venv/
 *.log
+**/__pycache__/
 build/
 node_modules/
 .idea/

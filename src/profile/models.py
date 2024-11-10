@@ -5,7 +5,6 @@ from sqlalchemy import Integer, String, ForeignKey
 
 class Profile(Base):
     __tablename__ = 'profile'
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"), unique=True)
     user: Mapped["User"] = relationship("User",
                                         back_populates='profile',
