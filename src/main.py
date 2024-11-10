@@ -1,6 +1,8 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from starlette.staticfiles import StaticFiles
+
 # from fastapi_cache import FastAPICache
 # from fastapi_cache.backends.redis import RedisBackend
 # from redis import asyncio as aioredis
@@ -25,7 +27,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan,
               validation_error_model=BaseResponse)
 
-# app.mount('/static', StaticFiles(directory='static'), name='static')
+app.mount('/photos', StaticFiles(directory='static/photos'), name='photos')
 
 
 # @app.get("/docs", include_in_schema=False)
@@ -55,8 +57,6 @@ app = FastAPI(lifespan=lifespan,
 
 app.include_router(router=auth_router)
 app.include_router(router=profile_router)
-
-
 
 
 @app.exception_handler(RequestValidationError)

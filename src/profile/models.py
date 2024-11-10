@@ -11,5 +11,5 @@ class Profile(Base):
                                         uselist=False)
     name: Mapped[str]
     surname: Mapped[str]
-    photo: Mapped[String] = mapped_column(String, nullable=True)
+    photo_url: Mapped[String] = mapped_column(String, nullable=True)
 

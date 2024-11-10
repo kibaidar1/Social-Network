@@ -6,6 +6,7 @@ from src.auth.schemas import UserRead
 
 NameField = Field(min_length=1, max_length=255)
 
+
 class ProfileCreateUpdate(BaseModel):
     name: str = NameField
     surname: str = NameField
@@ -21,7 +22,7 @@ class ProfileRead(BaseModel):
     user: UserRead
     name: str = NameField
     surname: str = NameField
-    photo: Any or None = None
+    photo_url: str | None = None
 
     model_config = ConfigDict(from_attributes=True,
                               arbitrary_types_allowed=True)

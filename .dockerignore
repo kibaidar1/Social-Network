@@ -1,7 +1,9 @@
 .git
 .cache
+**/__pycache__/
 .env.develop
 .env
+.env.template
 .venv/
 *.log
 build/
@@ -10,5 +12,5 @@ node_modules/
 my_notes.txt
 media/
 mydatabase
-.env.template
-.env
+
+

@@ -1,5 +1,6 @@
 .env.develop
 .env
+static/photos/
 .venv/
 *.log
 **/__pycache__/
