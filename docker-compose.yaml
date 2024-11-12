@@ -3,8 +3,10 @@ services:
   db:
     image: postgres:15
     container_name: db
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
     env_file:
-      - .env.develop
+      - .env
 
   redis:
     image: redis:7
@@ -15,8 +17,9 @@ services:
       context: .
       dockerfile: Dockerfile
     env_file:
-      - .env.develop
+      - .env
     container_name: social_network_api
+    command: ["/social_network_api/docker/app.sh"]
     ports:
       - 8000:8000
     depends_on:
