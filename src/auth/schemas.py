@@ -3,6 +3,8 @@ from typing import Optional
 from fastapi_users import schemas
 from pydantic import EmailStr, ConfigDict
 
+from src.profile.schemas import ProfileRead
+
 
 class UserRead(schemas.BaseUser[int]):
     id: int
@@ -11,7 +13,7 @@ class UserRead(schemas.BaseUser[int]):
     is_active: bool = True
     is_superuser: bool = False
     is_verified: bool = False
-
+    profile: ProfileRead | None = None
     model_config = ConfigDict(from_attributes=True)
 
 

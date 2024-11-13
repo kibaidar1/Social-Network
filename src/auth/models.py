@@ -11,4 +11,5 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     username: Mapped[str]
     profile: Mapped["Profile"] = relationship("Profile",
                                               back_populates="user",
-                                              uselist=False)
+                                              uselist=False,
+                                              lazy='joined')

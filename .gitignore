@@ -8,5 +8,6 @@ build/
 node_modules/
 .idea/
 my_notes.txt
-media/
 mydatabase
+postgres-data/
+/postgres-data/

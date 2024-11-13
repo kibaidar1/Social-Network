@@ -2,7 +2,7 @@ from typing import Any
 
 from pydantic import EmailStr, BaseModel, Json, Field, field_validator, ConfigDict
 
-from src.auth.schemas import UserRead
+# from src.auth.schemas import UserRead
 
 NameField = Field(min_length=1, max_length=255)
 
@@ -19,7 +19,6 @@ class ProfileCreateUpdate(BaseModel):
 
 class ProfileRead(BaseModel):
     id: int
-    user: UserRead
     name: str = NameField
     surname: str = NameField
     photo_url: str | None = None

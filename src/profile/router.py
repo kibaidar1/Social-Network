@@ -99,7 +99,7 @@ async def get_profile(session: AsyncSession = Depends(get_async_session),
                       user: User = Depends(current_active_user)):
 
     query = (select(Profile)
-             .where(Profile.user_id == user.id))
+             .where(Profile.user == user))
     profile = await session.execute(query)
     profile_data = ProfileRead.model_validate(profile.scalar_one(), from_attributes=True)
     return profile_data
@@ -111,7 +111,7 @@ async def update_profile(profile: ProfileCreateUpdate, session: AsyncSession = D
                          user: User = Depends(current_active_user)):
 
     stmt = (update(Profile)
-            .where(Profile.user_id == user.id)
+            .where(Profile.user == user)
             .values(**profile.model_dump(), user_id=user.id))
     result = await session.execute(stmt)
     if not result.rowcount:
@@ -126,7 +126,7 @@ async def delete_profile(session: AsyncSession = Depends(get_async_session),
                          user: User = Depends(current_active_user)):
 
     stmt = (delete(Profile)
-            .where(Profile.user_id == user.id))
+            .where(Profile.user == user))
     result = await session.execute(stmt)
     if not result.rowcount:
         raise NoResultFound
@@ -174,7 +174,7 @@ async def add_photo(file: UploadFile = File(..., description="Загрузите
     file_path = validate_and_save_photo(file, str(user.id))
     photo_url = f"http://localhost:8000/photos/{file_path}"
     stmt = (update(Profile)
-            .where(Profile.user_id == user.id)
+            .where(Profile.user == user)
             .values(photo_url=photo_url))
     result = await session.execute(stmt)
     if not result.rowcount:
