@@ -25,7 +25,7 @@ router = APIRouter(prefix='/profile',
 
 # Директория для сохранения загруженных фото
 UPLOAD_DIR = Path('static/photos')
-UPLOAD_DIR.mkdir(exist_ok=True)
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 # Поддерживаемые форматы изображений
 ALLOWED_EXTENSIONS = ("png", "jpg", "jpeg")
