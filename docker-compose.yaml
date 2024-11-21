@@ -12,7 +12,7 @@ services:
     container_name: redis
 
   api:
-    image: social_network_api:latest
+    image: social_network_api
     container_name: social_network_api
     build:
       context: .
