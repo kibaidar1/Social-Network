@@ -19,6 +19,7 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env
+    entrypoint: ["sh", "docker/app.sh"]
     ports:
       - 8000:8000
     depends_on:
