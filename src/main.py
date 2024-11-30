@@ -1,9 +1,11 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from sqladmin import Admin
 from starlette.middleware.cors import CORSMiddleware
 from starlette.staticfiles import StaticFiles
 
+from src.auth.admin import UserAdmin
 # from fastapi_cache import FastAPICache
 # from fastapi_cache.backends.redis import RedisBackend
 # from redis import asyncio as aioredis
@@ -15,6 +17,8 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 
 from src.auth.router import router as auth_router
+from src.database import engine
+from src.profile.admin import ProfileAdmin
 from src.profile.router import router as profile_router
 
 
@@ -28,7 +32,10 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan,
               validation_error_model=BaseResponse)
 
-app.mount('/photos', StaticFiles(directory='static/photos'), name='photos')
+admin = Admin(app, engine)
+
+admin.add_view(UserAdmin)
+admin.add_view(ProfileAdmin)
 
 origins = ['http://localhost:5174', 'http://http://127.0.0.1:5174']
 app.add_middleware(
@@ -38,6 +45,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.mount('/photos', StaticFiles(directory='static/photos'), name='photos')
+
+
 
 # @app.get("/docs", include_in_schema=False)
 # async def custom_swagger_ui_html():
