@@ -1,9 +1,17 @@
 from typing import Optional
 
 from fastapi_users import schemas
-from pydantic import EmailStr, ConfigDict
+from pydantic import EmailStr, ConfigDict, BaseModel
 
 from src.profile.schemas import ProfileRead
+
+
+class UserReadAll(BaseModel):
+    id: int
+    username: str
+    profile: ProfileRead | None
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserRead(schemas.BaseUser[int]):
@@ -14,6 +22,7 @@ class UserRead(schemas.BaseUser[int]):
     is_superuser: bool = False
     is_verified: bool = False
     profile: ProfileRead | None = None
+
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -21,6 +30,3 @@ class UserCreateUpdate(schemas.BaseUserCreate):
     username: str
     email: EmailStr
     password: str
-    is_active: Optional[bool] = True
-    is_superuser: Optional[bool] = False
-    is_verified: Optional[bool] = False

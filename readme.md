@@ -54,3 +54,4 @@ docker-compose up --build
 
 - **Swagger UI: http://localhost:8000/docs**
 - **ReDoc: http://localhost:8000/redoc**
+- **Admin: http://localhost:8000/admin**

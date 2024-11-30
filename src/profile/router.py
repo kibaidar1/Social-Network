@@ -1,24 +1,20 @@
-
 from pathlib import Path
+from PIL import Image
 
 from fastapi import APIRouter, Depends, UploadFile, File
-
-
-from functools import wraps
-
-from fastapi.responses import JSONResponse
-
 from fastapi import APIRouter, Depends, HTTPException
+
 from sqlalchemy import select, insert, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.exc import IntegrityError, NoResultFound
+from sqlalchemy.exc import NoResultFound
+
 from src.auth.base_config import current_active_user
 from src.auth.models import User
 from src.base_schema import BaseResponse
 from src.database import get_async_session
 from src.profile.models import Profile
 from src.profile.schemas import ProfileCreateUpdate, ProfileRead
-from PIL import Image
+from src.base_schema import async_base_crud_route
 
 router = APIRouter(prefix='/profile',
                    tags=['profile'])
@@ -33,57 +29,8 @@ MAX_FILE_SIZE = 2 * 1024 * 1024  # Ограничение на 2 МБ
 TARGET_SIZE = (1024, 1024)  # Целевой размер изображения
 
 
-def async_base_route(success_status):
-    def decorator(rout):
-        @wraps(rout)
-        async def wrapper(*args, **kwargs):
-            status_code = success_status
-            message = 'Success'
-            data = []
-            errors = []
-
-            try:
-                result = await rout(*args, **kwargs)
-                if result:
-                    data.append(result)
-
-            except NoResultFound as e:
-                print(e)
-                message = 'Failed'
-                status_code = 404
-                errors.append('Profile is not exists')
-
-            except IntegrityError as e:
-                print(e)
-                message = 'Failed'
-                status_code = 400
-                errors.append("Profile already exists")
-
-            except HTTPException as e:
-                print(e)
-                message = 'Failed'
-                status_code = 400
-                errors.append(str(e.detail))
-
-            except Exception as e:
-                print(e)
-                message = "Failed"
-                status_code = 500
-                errors.append('Unknown error')
-
-            finally:
-                return JSONResponse(status_code=status_code,
-                                    content=BaseResponse(
-                                        message=message,
-                                        data=data,
-                                        errors=errors,
-                                    ).model_dump())
-        return wrapper
-    return decorator
-
-
 @router.post("/", response_model=BaseResponse)
-@async_base_route(success_status=201)
+@async_base_crud_route(success_status=201)
 async def create_profile(profile: ProfileCreateUpdate,
                          session: AsyncSession = Depends(get_async_session),
                          user: User = Depends(current_active_user)):
@@ -94,7 +41,7 @@ async def create_profile(profile: ProfileCreateUpdate,
 
 
 @router.get("/", response_model=BaseResponse)
-@async_base_route(success_status=200)
+@async_base_crud_route(success_status=200)
 async def get_profile(session: AsyncSession = Depends(get_async_session),
                       user: User = Depends(current_active_user)):
 
@@ -106,7 +53,7 @@ async def get_profile(session: AsyncSession = Depends(get_async_session),
 
 
 @router.put("/", response_model=BaseResponse)
-@async_base_route(success_status=200)
+@async_base_crud_route(success_status=200)
 async def update_profile(profile: ProfileCreateUpdate, session: AsyncSession = Depends(get_async_session),
                          user: User = Depends(current_active_user)):
 
@@ -121,7 +68,7 @@ async def update_profile(profile: ProfileCreateUpdate, session: AsyncSession = D
 
 
 @router.delete("/", response_model=BaseResponse)
-@async_base_route(success_status=200)
+@async_base_crud_route(success_status=200)
 async def delete_profile(session: AsyncSession = Depends(get_async_session),
                          user: User = Depends(current_active_user)):
 
@@ -167,7 +114,7 @@ def validate_and_save_photo(file: UploadFile, filename: str):
 
 
 @router.post('/add_photo', response_model=BaseResponse)
-@async_base_route(success_status=201)
+@async_base_crud_route(success_status=201)
 async def add_photo(file: UploadFile = File(..., description="Загрузите изображение в формате JPG или PNG"),
                     session: AsyncSession = Depends(get_async_session),
                     user: User = Depends(current_active_user)):
@@ -181,6 +128,3 @@ async def add_photo(file: UploadFile = File(..., description="Загрузите
         raise NoResultFound
     await session.commit()
     return photo_url
-
-
-

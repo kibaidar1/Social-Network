@@ -16,7 +16,7 @@ from src.base_schema import BaseResponse
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 
-from src.auth.router import router as auth_router
+from src.auth.router import auth_router, users_router
 from src.database import engine
 from src.profile.admin import ProfileAdmin
 from src.profile.router import router as profile_router
@@ -76,6 +76,7 @@ app.mount('/photos', StaticFiles(directory='static/photos'), name='photos')
 
 
 app.include_router(router=auth_router)
+app.include_router(router=users_router)
 app.include_router(router=profile_router)
 
 
