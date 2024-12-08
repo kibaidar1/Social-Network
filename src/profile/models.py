@@ -12,3 +12,5 @@ class Profile(Base):
     surname: Mapped[str]
     photo_url: Mapped[String] = mapped_column(String, nullable=True)
 
+    def __str__(self):
+        return f'{self.surname} {self.name}'
