@@ -17,11 +17,13 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 
 from src.auth.router import auth_router, users_router
+from src.comment.admin import CommentAdmin
 from src.database import engine
 from src.post.admin import PostAdmin
 from src.profile.admin import ProfileAdmin
 from src.profile.router import router as profile_router
 from src.post.router import router as post_router
+from src.comment.router import router as comment_router
 
 
 @asynccontextmanager
@@ -39,6 +41,7 @@ admin = Admin(app, engine)
 admin.add_view(UserAdmin)
 admin.add_view(ProfileAdmin)
 admin.add_view(PostAdmin)
+admin.add_view(CommentAdmin)
 
 origins = ['http://localhost:5174', 'http://http://127.0.0.1:5174']
 app.add_middleware(
@@ -82,6 +85,7 @@ app.include_router(router=auth_router)
 app.include_router(router=users_router)
 app.include_router(router=profile_router)
 app.include_router(router=post_router)
+app.include_router(router=comment_router)
 
 
 @app.exception_handler(RequestValidationError)

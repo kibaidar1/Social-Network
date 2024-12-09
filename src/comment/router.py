@@ -12,7 +12,7 @@ from src.database import get_async_session
 from src.post.models import Post
 
 router = APIRouter(prefix='/posts',
-                   tags=['posts'])
+                   tags=['comments'])
 
 
 @router.post('/{post_slug}')

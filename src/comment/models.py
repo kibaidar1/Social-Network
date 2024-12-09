@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, ForeignKey, String, ARRAY, event
+from sqlalchemy import Integer, ForeignKey
 from sqlalchemy.orm import Mapped, relationship, mapped_column, validates
 
 from src.database import Base
