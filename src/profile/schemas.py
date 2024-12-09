@@ -18,7 +18,6 @@ class ProfileCreateUpdate(BaseModel):
 
 
 class ProfileRead(BaseModel):
-    id: int
     name: str = NameField
     surname: str = NameField
     photo_url: str | None = None

@@ -4,7 +4,7 @@ from sqlalchemy import Integer, String, ForeignKey
 
 
 class Profile(Base):
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"), unique=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id", ondelete="CASCADE"), unique=True)
     user: Mapped["User"] = relationship("User",
                                         back_populates='profile',
                                         uselist=False)

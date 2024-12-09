@@ -7,7 +7,6 @@ from src.profile.schemas import ProfileRead
 
 
 class UserReadAll(BaseModel):
-    id: int
     username: str
     profile: ProfileRead | None
 
@@ -15,7 +14,6 @@ class UserReadAll(BaseModel):
 
 
 class UserRead(schemas.BaseUser[int]):
-    id: int
     username: str
     email: EmailStr
     is_active: bool = True

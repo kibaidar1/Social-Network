@@ -4,7 +4,7 @@ from fastapi import Depends
 from fastapi.routing import APIRouter
 from slugify import slugify
 from sqlalchemy import select, insert, update, delete
-from sqlalchemy.exc import NoResultFound, IntegrityError
+from sqlalchemy.exc import NoResultFound
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 from starlette.responses import RedirectResponse
@@ -34,7 +34,7 @@ async def generate_unique_slug(session: AsyncSession, title: str) -> str:
         # Собираем все числовые суффиксы из базы данных для данного base_slug
         stmt = select(Post).filter(Post.slug.like(f"{base_slug}-%"))
         result = await session.execute(stmt)
-        posts = result.scalars().all()
+        posts = result.unique().scalars().all()
 
         # Собираем все числовые суффиксы
         suffixes = set()
@@ -63,7 +63,17 @@ async def generate_unique_slug(session: AsyncSession, title: str) -> str:
 async def get_all_posts(session: AsyncSession = Depends(get_async_session)):
     stmt = select(Post)
     res = await session.execute(stmt)
-    posts = res.scalars().all()
+    posts = res.scalars().unique().all()
+    return [PostRead.model_validate(p, from_attributes=True) for p in posts]
+
+
+@router.get('/my_posts')
+@async_base_crud_route(200)
+async def get_my_posts(session: AsyncSession = Depends(get_async_session),
+                       user: User = Depends(current_active_user)):
+    stmt = select(Post).where(Post.user_id == user.id)
+    res = await session.execute(stmt)
+    posts = res.scalars().unique().all()
     return [PostRead.model_validate(p, from_attributes=True) for p in posts]
 
 
@@ -73,19 +83,8 @@ async def get_post_detail(post_slug: str,
                           session: AsyncSession = Depends(get_async_session)):
     stmt = select(Post).where(Post.slug == post_slug)
     res = await session.execute(stmt)
-    post = res.scalar_one()
-    print(post.user_id)
+    post = res.unique().scalar_one()
     return PostReadDetail.model_validate(post, from_attributes=True)
-
-
-@router.get('/my_posts')
-@async_base_crud_route(200)
-async def get_my_posts(session: AsyncSession = Depends(get_async_session),
-                       user: User = Depends(current_active_user)):
-    stmt = select(Post).where(Post.user_id == user.id)
-    res = await session.execute(stmt)
-    posts = res.scalars().all()
-    return [PostRead.model_validate(p, from_attributes=True) for p in posts]
 
 
 @router.post('/')
@@ -110,7 +109,6 @@ async def update_post(post_slug: str,
                       session: AsyncSession = Depends(get_async_session),
                       user: User = Depends(current_active_user)):
     data = post_data.model_dump(exclude_unset=True)
-    print(data)
     if post_data.title:
         data['slug'] = await generate_unique_slug(session, post_data.title)
     stmt = (update(Post)
