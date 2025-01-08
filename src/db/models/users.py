@@ -1,11 +1,9 @@
-from datetime import datetime
 from typing import List
 
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
-from sqlalchemy import Integer, String, TIMESTAMP, JSON, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.database import Base
+from src.db.database import Base
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):

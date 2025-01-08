@@ -5,6 +5,7 @@ from sqladmin import Admin
 from starlette.middleware.cors import CORSMiddleware
 from starlette.staticfiles import StaticFiles
 
+from src.api.routers.routers import all_routers
 from src.auth.admin import UserAdmin
 # from fastapi_cache import FastAPICache
 # from fastapi_cache.backends.redis import RedisBackend
@@ -19,10 +20,9 @@ from fastapi.exceptions import RequestValidationError
 from src.auth.router import auth_router, users_router
 from src.comment.admin import CommentAdmin
 from src.database import engine
-from src.post.admin import PostAdmin
 from src.profile.admin import ProfileAdmin
 from src.profile.router import router as profile_router
-from src.post.router import router as post_router
+from src.api.routers.posts import router as post_router
 from src.comment.router import router as comment_router
 
 
@@ -38,10 +38,10 @@ app = FastAPI(lifespan=lifespan,
 
 admin = Admin(app, engine)
 
-admin.add_view(UserAdmin)
-admin.add_view(ProfileAdmin)
-admin.add_view(PostAdmin)
-admin.add_view(CommentAdmin)
+# admin.add_view(UserAdmin)
+# admin.add_view(ProfileAdmin)
+# admin.add_view(PostAdmin)
+# admin.add_view(CommentAdmin)
 
 origins = ['http://localhost:5174', 'http://http://127.0.0.1:5174']
 app.add_middleware(
@@ -80,12 +80,8 @@ app.mount('/photos', StaticFiles(directory='static/photos'), name='photos')
 #         redoc_js_url="/static/redoc.standalone.js",
 #     )
 
-
-app.include_router(router=auth_router)
-app.include_router(router=users_router)
-app.include_router(router=profile_router)
-app.include_router(router=post_router)
-app.include_router(router=comment_router)
+for router in all_routers:
+    app.include_router(router)
 
 
 @app.exception_handler(RequestValidationError)

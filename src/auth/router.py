@@ -3,11 +3,10 @@ from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.base_config import auth_backend, current_active_user, fastapi_users
-from src.auth.models import User
 from src.auth.schemas import UserRead, UserCreateUpdate, UserReadAll
 from src.base_schema import async_base_crud_route
 from src.database import get_async_session
-
+from src.db.models.users import User
 
 auth_router = APIRouter(prefix="/auth/jwt",
                         tags=["auth"])

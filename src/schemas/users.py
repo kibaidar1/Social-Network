@@ -1,12 +1,12 @@
 from fastapi_users import schemas
 from pydantic import EmailStr, ConfigDict, BaseModel
 
-from src.profile.schemas import ProfileRead
+from src.schemas.profiles import Profile
 
 
 class UserReadAll(BaseModel):
     username: str
-    profile: ProfileRead | None
+    profile: Profile | None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -17,7 +17,7 @@ class UserRead(schemas.BaseUser[int]):
     is_active: bool = True
     is_superuser: bool = False
     is_verified: bool = False
-    profile: ProfileRead | None = None
+    profile: Profile | None = None
 
     model_config = ConfigDict(from_attributes=True)
 

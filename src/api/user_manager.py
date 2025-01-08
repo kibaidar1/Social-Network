@@ -5,9 +5,9 @@ from fastapi import Depends
 from fastapi_users import IntegerIDMixin, BaseUserManager, schemas, models, exceptions
 from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
 
-from src.auth.utils import get_user_db
 from src.config import AUTH_SECRET
 from src.db.models.users import User
+from src.db.utils import get_user_db
 
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):

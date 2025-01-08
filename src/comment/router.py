@@ -4,12 +4,12 @@ from sqlalchemy import select, insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.base_config import current_active_user
-from src.auth.models import User
 from src.base_schema import async_base_crud_route
 from src.comment.models import Comment
 from src.comment.schemas import CommentCreateUpdate
 from src.database import get_async_session
-from src.post.models import Post
+from src.db.models.posts import Post
+from src.db.models.users import User
 
 router = APIRouter(prefix='/posts',
                    tags=['comments'])

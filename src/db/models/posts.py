@@ -2,7 +2,7 @@ from typing import List
 from sqlalchemy import Integer, ForeignKey, String, ARRAY, event
 from sqlalchemy.orm import Mapped, relationship, mapped_column, validates
 
-from src.database import Base
+from src.db.database import Base
 
 
 class Post(Base):

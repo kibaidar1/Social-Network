@@ -1,6 +1,6 @@
 from sqladmin import ModelView
 
-from src.auth.models import User
+from src.db.models.users import User
 
 
 class UserAdmin(ModelView, model=User):

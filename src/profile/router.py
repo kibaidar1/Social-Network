@@ -9,9 +9,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import NoResultFound
 
 from src.auth.base_config import current_active_user
-from src.auth.models import User
 from src.base_schema import BaseResponse
 from src.database import get_async_session
+from src.db.models.users import User
 from src.profile.models import Profile
 from src.profile.schemas import ProfileCreateUpdate, ProfileRead
 from src.base_schema import async_base_crud_route
