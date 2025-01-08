@@ -7,8 +7,7 @@ from src.api.auth_config import current_active_user
 from src.api.base_route_schema import async_base_crud_route
 from src.api.dependencies import UOWDep
 from src.db.models.users import User
-from src.post.schemas import PostCreate
-from src.schemas.posts import PostRead, PostUpdate
+from src.schemas.posts import PostRead, PostUpdate, PostCreate
 from src.services.posts import PostsService
 
 router = APIRouter(prefix='/posts',

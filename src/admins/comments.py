@@ -1,6 +1,6 @@
 from sqladmin import ModelView
 
-from src.comment.models import Comment
+from src.db.models.comments import Comment
 
 
 class CommentAdmin(ModelView, model=Comment):

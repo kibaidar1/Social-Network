@@ -1,4 +1,4 @@
-from src.auth.schemas import UserReadAll
+from src.schemas.users import UserReadAll
 from src.utils.unitofwork import UnitOfWork
 
 

@@ -1,5 +1,5 @@
-from src.post.schemas import PostRead
-from src.schemas.posts import PostCreate, PostUpdate, PostReadDetail
+
+from src.schemas.posts import PostCreate, PostUpdate, PostReadDetail, PostRead
 from src.services.utils import generate_unique_slug
 from src.utils.unitofwork import UnitOfWork
 

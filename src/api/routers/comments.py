@@ -1,12 +1,11 @@
 from fastapi import Depends
 from fastapi.routing import APIRouter
 
+from src.api.auth_config import current_active_user
 from src.api.dependencies import UOWDep
-from src.auth.base_config import current_active_user
 from src.base_schema import async_base_crud_route
-from src.comment.schemas import CommentCreateUpdate
-from src.database import get_async_session
 from src.db.models.users import User
+from src.schemas.comments import CommentCreateUpdate
 from src.services.comments import CommentService
 
 router = APIRouter(prefix='/posts',

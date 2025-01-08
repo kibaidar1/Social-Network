@@ -1,7 +1,6 @@
 from PIL import Image
 
 from src.db.models.users import User
-from src.profile.schemas import ProfileRead
 from src.services.utils import validate_and_save_photo
 from src.utils.unitofwork import UnitOfWork
 from src.schemas.profiles import Profile
@@ -21,10 +20,10 @@ class ProfilesService:
 
     @staticmethod
     async def get_profile(uow: UnitOfWork,
-                          user: User) -> ProfileRead:
+                          user: User) -> Profile:
         async with uow:
             profile = await uow.profiles.find_one(user=user)
-            return ProfileRead.model_validate(profile)
+            return Profile.model_validate(profile)
 
     @staticmethod
     async def update_profile(uow: UnitOfWork,

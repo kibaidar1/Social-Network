@@ -1,6 +1,6 @@
 from sqladmin import ModelView
 
-from src.post.models import Post
+from src.db.models.posts import Post
 
 
 class PostAdmin(ModelView, model=Post):

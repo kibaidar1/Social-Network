@@ -1,7 +1,7 @@
 from fastapi_users import FastAPIUsers
 from fastapi_users.authentication import BearerTransport, JWTStrategy, AuthenticationBackend
 
-from src.auth.manager import get_user_manager
+from src.api.user_manager import get_user_manager
 from src.config import AUTH_SECRET
 from src.db.models.users import User
 

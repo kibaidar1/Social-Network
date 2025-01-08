@@ -5,8 +5,11 @@ from sqladmin import Admin
 from starlette.middleware.cors import CORSMiddleware
 from starlette.staticfiles import StaticFiles
 
+from src.admins.comments import CommentAdmin
+from src.admins.posts import PostAdmin
+from src.admins.profiles import ProfileAdmin
+from src.admins.users import UserAdmin
 from src.api.routers.routers import all_routers
-from src.auth.admin import UserAdmin
 # from fastapi_cache import FastAPICache
 # from fastapi_cache.backends.redis import RedisBackend
 # from redis import asyncio as aioredis
@@ -17,13 +20,7 @@ from src.base_schema import BaseResponse
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 
-from src.auth.router import auth_router, users_router
-from src.comment.admin import CommentAdmin
 from src.database import engine
-from src.profile.admin import ProfileAdmin
-from src.profile.router import router as profile_router
-from src.api.routers.posts import router as post_router
-from src.comment.router import router as comment_router
 
 
 @asynccontextmanager
@@ -38,10 +35,10 @@ app = FastAPI(lifespan=lifespan,
 
 admin = Admin(app, engine)
 
-# admin.add_view(UserAdmin)
-# admin.add_view(ProfileAdmin)
-# admin.add_view(PostAdmin)
-# admin.add_view(CommentAdmin)
+admin.add_view(UserAdmin)
+admin.add_view(ProfileAdmin)
+admin.add_view(PostAdmin)
+admin.add_view(CommentAdmin)
 
 origins = ['http://localhost:5174', 'http://http://127.0.0.1:5174']
 app.add_middleware(

@@ -1,6 +1,6 @@
 from sqladmin import ModelView
 
-from src.profile.models import Profile
+from src.db.models.profiles import Profile
 
 
 class ProfileAdmin(ModelView, model=Profile):
