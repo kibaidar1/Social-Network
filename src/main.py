@@ -9,6 +9,8 @@ from src.admins.comments import CommentAdmin
 from src.admins.posts import PostAdmin
 from src.admins.profiles import ProfileAdmin
 from src.admins.users import UserAdmin
+from src.api.base_route_schema import BaseResponse
+from src.api.exception_handlers import init_exception_handlers
 from src.api.routers.routers import all_routers
 # from fastapi_cache import FastAPICache
 # from fastapi_cache.backends.redis import RedisBackend
@@ -16,7 +18,6 @@ from src.api.routers.routers import all_routers
 # from fastapi.openapi.docs import get_redoc_html, get_swagger_ui_oauth2_redirect_html, get_swagger_ui_html
 # from starlette.staticfiles import StaticFiles
 
-from src.base_schema import BaseResponse
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 
@@ -81,13 +82,7 @@ for router in all_routers:
     app.include_router(router)
 
 
-@app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request, exc):
-    return JSONResponse(status_code=422,
-                        content=BaseResponse(
-                            message="Failed",
-                            errors=[str(exc)],
-                        ).model_dump())
+init_exception_handlers(app)
 
 
 
